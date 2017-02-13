@@ -40,15 +40,78 @@ use Composer\Script\Event;
 class ScriptHandler
 {
     /**
+     * Error: No configuration passed.
+     *
+     * @var string
+     */
+    const ERROR_PARAMETERS_MISSING = 'The installer needs to be configured through the extra.install-parameters setting.';
+
+    /**
+     * Error: Type neither array nor object.
+     *
+     * @var string
+     */
+    const ERROR_PARAMETERS_INVALID_TYPE = 'The extra.install-parameters setting must be an array of configuration objects.';
+
+    /**
+     * Error: Single set of parameters invalid type.
+     *
+     * @var string
+     */
+    const ERROR_PARAMETER_SET_INVALID_TYPE = 'An extra.install-parameters[] set must be an array.';
+
+    /**
+     * Error: Required parameter(s) missing.
+     *
+     * @var string
+     */
+    const ERROR_REQUIRED_PARAMETERS_MISSING = 'The extra.install-parameters.file-uri setting is required to use this script handler.';
+
+    /**
      * installFiles handles the call for file installation from composer.json
      *
      * @param \Composer\Script\Event $event
      *
      * @author Benjamin Carl <opensource@clickalicious.de>
+     *
+     * @throws \InvalidArgumentException On any exceptional behavior.
      */
     public static function installFiles(Event $event)
     {
-        dump($event);
-        die;
+        $extras = $event->getComposer()->getPackage()->getExtra();
+
+        // Check if required installer parameters defined
+        if (false === isset($extras['install-parameters'])) {
+            throw new \InvalidArgumentException(self::ERROR_PARAMETERS_MISSING);
+        }
+
+        $configs = $extras['install-parameters'];
+
+        // Check if type is correct
+        if (false === is_array($configs)) {
+            throw new \InvalidArgumentException(self::ERROR_PARAMETERS_INVALID_TYPE);
+        }
+
+        if (array_keys($configs) !== range(0, count($configs) - 1)) {
+            $configs = array($configs);
+        }
+
+        // Retrieve script processor handle (responsive for reading parameters and dispatching download & install)
+        $processor = new ScriptProcessor($event->getIO());
+
+        // Iterate configurations found and process
+
+        foreach ($configs as $config) {
+
+            if (false === is_array($config)) {
+                throw new \InvalidArgumentException(self::ERROR_PARAMETER_SET_INVALID_TYPE);
+            }
+
+            if (!array_key_exists('file-uri', $config)) {
+                throw new \InvalidArgumentException(self::ERROR_REQUIRED_PARAMETERS_MISSING);
+            }
+
+            $processor->processFile($config);
+        }
     }
 }

@@ -57,6 +57,12 @@ class ScriptHandlerTest extends TestCase
      */
     private $package;
 
+    /**
+     * setUp.
+     *
+     * @author Benjamin Carl <opensource@clickalicious.de>
+     *
+     */
     protected function setUp()
     {
         parent::setUp();
@@ -74,43 +80,49 @@ class ScriptHandlerTest extends TestCase
     }
 
     /**
+     * @param array  $extras           Parameters for installer.
+     * @param string $exceptionMessage Message of exception
+     *
      * @dataProvider provideInvalidConfiguration
      */
     public function testInvalidConfiguration(array $extras, $exceptionMessage)
     {
-        dump($extras);
-        dumnp($exceptionMessage);
-        die;
+        $this->package->getExtra()->willReturn($extras);
 
+        chdir(dirname(__DIR__, 2));
 
-        #$this->package->getExtra()->willReturn($extras);
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage($exceptionMessage);
 
-        #chdir(__DIR__);
-
-        #$this->setExpectedException('InvalidArgumentException', $exceptionMessage);
-
-        #ScriptHandler::installFiles($this->event->reveal());
+        ScriptHandler::installFiles($this->event->reveal());
     }
 
+    /**
+     * provideInvalidConfiguration.
+     *
+     * @author Benjamin Carl <opensource@clickalicious.de>
+     *
+     * @return array
+     */
     public function provideInvalidConfiguration()
     {
-        return array(
-            'no extra' => array(
-                array(),
-                'The parameter handler needs to be configured through the extra.incenteev-parameters setting.',
-            ),
-            'invalid type' => array(
-                array('incenteev-parameters' => 'not an array'),
-                'The extra.incenteev-parameters setting must be an array or a configuration object.',
-            ),
-            'invalid type for multiple file' => array(
-                array('incenteev-parameters' => array('not an array')),
-                'The extra.incenteev-parameters setting must be an array of configuration objects.',
-            ),
-            'no file' => array(
-                array('incenteev-parameters' => array()),
-                'The extra.incenteev-parameters.file setting is required to use this script handler.',
-            ),
-        );
+        return [
+            'no install-parameters defined' => [
+                [],
+                ScriptHandler::ERROR_PARAMETERS_MISSING,
+            ],
+            'invalid type for install-parameters found' => [
+                ['install-parameters' => 'not an array'],
+                ScriptHandler::ERROR_PARAMETERS_INVALID_TYPE,
+            ],
+            'invalid type for single install-parameters set found' => [
+                ['install-parameters' => ['not an array']],
+                ScriptHandler::ERROR_PARAMETER_SET_INVALID_TYPE,
+            ],
+            'no file-uri passed with parameters' => [
+                ['install-parameters' => []],
+                ScriptHandler::ERROR_REQUIRED_PARAMETERS_MISSING
+            ],
+        ];
     }
 }

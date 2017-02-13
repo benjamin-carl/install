@@ -49,8 +49,13 @@ Use `clickalicious\install` in `composer.json` context for downloading and insta
         ]
     },
     "extra": {
-        "install-configuration": [{
-            "source": "https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar"
+        "install-parameters": [{
+    	    "file-uri": "https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar",
+    	    "destination-filename": "foo.phar",
+    	    "destination-directory": ".",
+    	    "temporary-filename": "78d7fgs87sdf987sd89f",
+    	    "temporary-directory": "/tmp",
+            "install": true
         }]
     }
 }
