@@ -53,6 +53,11 @@ class ScriptHandlerTest extends TestCase
     private $io;
 
     /**
+     * @var \Composer\Config
+     */
+    private $config;
+
+    /**
      * @var \Composer\Package\PackageInterface
      */
     private $package;
@@ -70,11 +75,16 @@ class ScriptHandlerTest extends TestCase
         $this->event   = $this->prophesize('Composer\Script\Event');
         $this->io      = $this->prophesize('Composer\IO\IOInterface');
         $this->package = $this->prophesize('Composer\Package\PackageInterface');
+        $this->config  = $this->prophesize('Composer\Config');
+
+        // Prepare safe return values for testing
+        $this->config->get('bin-dir')->willReturn(sys_get_temp_dir());
 
         /* @var $composer \Composer\Composer */
         $composer = $this->prophesize('Composer\Composer');
-
         $composer->getPackage()->willReturn($this->package);
+        $composer->getConfig()->willReturn($this->config->reveal());
+
         $this->event->getComposer()->willReturn($composer);
         $this->event->getIO()->willReturn($this->io);
     }

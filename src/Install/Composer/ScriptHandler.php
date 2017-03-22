@@ -75,10 +75,14 @@ class ScriptHandler
      * @author Benjamin Carl <opensource@clickalicious.de>
      *
      * @throws \InvalidArgumentException On any exceptional behavior.
+     * @throws \RuntimeException
      */
     public static function installFiles(Event $event)
     {
         $extras = $event->getComposer()->getPackage()->getExtra();
+
+        // Prepare composer environment defaults for interpolation
+        $composerBinDir = $event->getComposer()->getConfig()->get('bin-dir');
 
         // Check if required installer parameters defined
         if (false === isset($extras['install-parameters'])) {
@@ -111,7 +115,10 @@ class ScriptHandler
                 throw new \InvalidArgumentException(self::ERROR_REQUIRED_PARAMETERS_MISSING);
             }
 
-            $processor->processFile($config);
+            $processor->processFile(
+                $config,
+                $composerBinDir
+            );
         }
     }
 }

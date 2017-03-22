@@ -72,7 +72,7 @@ class InstallerFactory
     {
         switch ($this->operatingSystem) {
             case self::OS_LINUX:
-                $installer = new LinuxInstaller();
+                $installer = new InstallerLinux();
                 break;
 
             default:

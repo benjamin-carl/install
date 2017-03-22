@@ -34,8 +34,10 @@ namespace Install\Console\Command;
 
 use Install\File\Installer;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Exception\InvalidArgumentException;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -50,13 +52,23 @@ class InstallCommand extends Command
      * Configuration
      *
      * @return void
+     *
+     * @throws InvalidArgumentException
      */
     protected function configure()
     {
         $this->setName('file:install')
-             ->setDescription('This command installs a file in local OS.')
+             ->setDescription('The install command installs a binary (binary, shell, phar) to local operating system and makes it globally available.')
              ->setDefinition([
-                 new InputArgument('file-name', InputArgument::REQUIRED, 'File name and path being installed.')
+                 new InputArgument(
+                     'file-name', InputArgument::REQUIRED, 'File name and path being installed.'
+                 ),
+                 new InputArgument(
+                     'destination-path', InputArgument::OPTIONAL, 'Destination path to install file to.'
+                 ),
+                 new InputOption(
+                     'changemod', 'cm', InputOption::VALUE_OPTIONAL, 'Flag to make file executable with chmod.', 00001
+                 )
              ])
              ->setHelp('The <info>install</info> command installs/registers a file from local filesystem in OS.');
     }
@@ -68,11 +80,21 @@ class InstallCommand extends Command
      * @param OutputInterface $output
      *
      * @return int|null|void
+     *
+     * @throws InvalidArgumentException
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $fileName = $input->getArgument('file-name');
+        $fileName        = $input->getArgument('file-name');
+        $destinationPath = $input->getArgument('destination-path');
 
+        $chmodExcecutable = $input->getOption('changemod');
+
+
+        dump($chmodExcecutable);
+        die;
+
+        /*
         $operatingSystem = strtolower(php_uname('s'));
 
         $installer = new Installer(
@@ -93,5 +115,6 @@ class InstallCommand extends Command
                 )
             );
         }
+        */
     }
 }

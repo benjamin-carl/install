@@ -1,7 +1,7 @@
 {
   "name": "clickalicious/install",
   "description": "Installer for installing binary-, phar-, shell- or batch-files from local or remote source.",
-  "type": "project",
+  "type": "library",
   "authors": [
     {
       "name": "Benjamin Carl",
@@ -15,17 +15,19 @@
   "require": {
     "php": ">=5.6.0",
     "roave/security-advisories": "dev-master as 1.0.x-dev",
-    "clickalicious/rng": "^1.1",
+    "clickalicious/rng": "^2.0",
     "symfony/console": "^3.2",
     "symfony/config": "^3.2",
     "symfony/yaml": "^3.2",
     "guzzlehttp/guzzle": "^6.2",
-    "beberlei/assert": "^2.7"
+    "beberlei/assert": "^2.7",
+    "gisostallenberg/file-permission-calculator": "^1.0"
   },
   "require-dev": {
     "phpunit/phpunit": "^5.7",
     "codacy/coverage": "^1.0",
     "symfony/var-dumper": "^3.2",
+    "clickalicious/webserverdaemon": "^0.1",
     "composer/composer": "1.0.*@dev"
   },
   "autoload": {

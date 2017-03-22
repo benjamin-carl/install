@@ -42,22 +42,23 @@ class ScriptProcessor
     /**
      * processFile.
      *
-     * @param array $configuration Configuration set passed by Composer run.
+     * @param array  $configuration  Configuration set passed by Composer run.
+     * @param string $composerBinDir Binary directory (e.g. vendor/bin) used by Composer.
      *
      * @author Benjamin Carl <opensource@clickalicious.de>
      *
+     * @throws \InvalidArgumentException On any exceptional behavior.
      */
-    public function processFile(array $configuration)
+    public function processFile(array $configuration, $composerBinDir)
     {
         $configuration = $this->interpolateConfiguration($configuration);
 
-        $realFile     = $configuration['file'];
+        $fileUri      = $configuration['file-uri'];
         $parameterKey = $configuration['parameter-key'];
 
-        $exists = is_file($realFile);
-
-        $action = $exists ? 'Updating' : 'Creating';
-        $this->io->write(sprintf('<info>%s the "%s" file</info>', $action, $realFile));
+        //$exists = is_file($realFile);
+        //$action = $exists ? 'Updating' : 'Creating';
+        //$this->io->write(sprintf('<info>%s the "%s" file</info>', $action, $realFile));
     }
 
     /**

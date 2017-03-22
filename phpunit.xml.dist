@@ -16,8 +16,6 @@
         <directory>./bin</directory>
         <directory>./docs</directory>
         <directory>./vendor</directory>
-        <directory>./wp-content</directory>
-        <directory>./www</directory>
       </exclude>
     </whitelist>
   </filter>

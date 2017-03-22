@@ -35,13 +35,17 @@ namespace Install\File\Installer;
  * @package Install\File\Installer
  * @author  Benjamin Carl <opensource@clickalicious.de>
  */
-class LinuxInstaller extends AbstractInstaller implements InstallerInterface
+class InstallerLinux extends AbstractInstaller implements InstallerInterface
 {
     /**
      * @inheritdoc
      */
     public function install($file, $updatePath = false)
     {
+        dump($file);
+        dump($updatePath);
+        die;
+
         return true;
     }
 }

@@ -35,11 +35,12 @@ namespace Install\Console\Command;
 use Install\Console\Helper\ProgressbarFactory;
 use Install\File\Downloader;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Exception\InvalidArgumentException;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Clickalicious\Rng;
+use Rng\Generator;
 
 /**
  * Class DownloadCommand
@@ -53,10 +54,11 @@ class DownloadCommand extends Command
      * Configuration of download command.
      *
      * @return void
+     * @throws InvalidArgumentException
      */
     protected function configure()
     {
-        $randomizer = new Rng\Generator(Rng\Generator::MODE_PHP_MERSENNE_TWISTER, time());
+        $randomizer = new Generator(Generator::MODE_PHP_MERSENNE_TWISTER, time());
 
         $this->setName('file:download')
              ->setDescription('This command downloads a file to local filesystem.')
@@ -92,7 +94,13 @@ class DownloadCommand extends Command
                      'i',
                      InputOption::VALUE_NONE,
                      'Flag to ignore invalid SSL certificate.'
-                 )
+                 ),
+                 new InputOption(
+                    'no-progress',
+                     'np',
+                     InputOption::VALUE_NONE,
+                     'Flag to hide progress when downloading file.'
+                 ),
              ])
              ->setHelp('The <info>download</info> command downloads a file from a given URI to the local filesystem.');
     }
@@ -104,18 +112,30 @@ class DownloadCommand extends Command
      * @param OutputInterface $output Output
      *
      * @return int|null|void
+     * @throws InvalidArgumentException
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        // Arguments
         $fileUri              = $input->getArgument('file-uri');
         $destinationFilename  = $input->getArgument('destination-filename');
         $destinationDirectory = $input->getArgument('destination-directory');
         $temporaryFilename    = $input->getArgument('temporary-filename');
         $temporaryDirectory   = $input->getArgument('temporary-directory');
-        $ignoreSslCertificate = $input->getOption('ignore-ssl-certificate');
 
-        $progressbarFactory = new ProgressbarFactory();
-        $downloader         = new Downloader($ignoreSslCertificate);
+        // Options
+        $ignoreSslCertificate = $input->getOption('ignore-ssl-certificate');
+        $noProgress           = $input->getOption('no-progress');
+
+        // Check for progressbar
+        $progressbarCallback = null;
+
+        if (false === $noProgress) {
+            $progressbarFactory  = new ProgressbarFactory();
+            $progressbarCallback = $progressbarFactory->create($output);
+        }
+
+        $downloader = new Downloader($ignoreSslCertificate);
 
         // Start download
         if (true !== $result = $downloader->download(
@@ -124,19 +144,17 @@ class DownloadCommand extends Command
                 $destinationFilename,
                 $temporaryDirectory,
                 $temporaryFilename,
-                $progressbarFactory->create($output)
+                $progressbarCallback
             )
         ) {
-            $output->writeln("\n");
             $output->writeln(
-                sprintf('<error>Error "%s" while downloading file "%s".</error>', $result, $fileUri)
+                sprintf("\n<error>Error \"%s\" while downloading file \"%s\".</error>", $result, $fileUri)
             );
 
         } else {
-            $output->writeln("\n");
             $output->writeln(
                 sprintf(
-                    '<info>File "%s" downloaded successful to.</info>',
+                    "\n<info>File \"%s\" downloaded successful to.</info>",
                     $fileUri
                 )
             );
