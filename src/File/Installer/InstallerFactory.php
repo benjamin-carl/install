@@ -1,10 +1,8 @@
 <?php
 
 /**
- * Install
- *
  * (The MIT license)
- * Copyright 2017 clickalicious UG, Benjamin Carl
+ * Copyright 2017 clickalicious, Benjamin Carl
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
@@ -27,52 +25,61 @@
  * SOFTWARE.
  */
 
-namespace Install\File;
-
-use Install\File\Installer\InstallerFactory;
+namespace Clickalicious\Install\File\Installer;
 
 /**
- * Class Installer
+ * Class InstallerFactory
  *
- * @package Install\File
+ * @package Install\File\Installer
  * @author  Benjamin Carl <opensource@clickalicious.de>
  */
-class Installer
+class InstallerFactory
 {
     /**
-     * @var \Install\File\Installer\InstallerFactory
+     * @var string
      */
-    protected $installerFactory;
+    protected $operatingSystem;
 
     /**
-     * Installer constructor.
+     * Used for OS detection linux.
      *
-     * @param \Install\File\Installer\InstallerFactory $installerFactory
+     * @var string
      */
-    public function __construct(InstallerFactory $installerFactory)
+    const OS_LINUX = 'linux';
+
+    /**
+     * InstallerFactory constructor.
+     *
+     * @param string $operatingSystem
+     */
+    public function __construct($operatingSystem)
     {
-        $this->installerFactory = $installerFactory;
+        $this->operatingSystem = $operatingSystem;
     }
 
     /**
-     * Installs a file by delegating install action to an OS dependent
-     *
-     * @param string $filename Name and path of the file being installed.
+     * Creates and returns operating specific installer instance.
      *
      * @author Benjamin Carl <opensource@clickalicious.de>
      *
-     * @return bool|string TRUE on success, otherwise string containing error message.
+     * @return InstallerInterface
+     *
+     * @throws InstallerNotAvailableException
      */
-    public function install($filename)
+    public function create()
     {
-        try {
-            $osDependentInstaller = $this->installerFactory->create();
-            $result = $osDependentInstaller->install($filename);
+        switch ($this->operatingSystem) {
+            case self::OS_LINUX:
+                $installer = new InstallerLinux();
+                break;
 
-        } catch (\Exception $exception) {
-            $result = $exception->getMessage();
+            default:
+                throw new InstallerNotAvailableException(
+                    sprintf('The operating system "%s" is currently not supported.', $this->operatingSystem)
+                );
+                break;
         }
 
-        return $result;
+        return $installer;
     }
 }

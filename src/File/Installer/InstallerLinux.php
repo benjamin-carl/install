@@ -1,10 +1,8 @@
 <?php
 
 /**
- * Install
- *
  * (The MIT license)
- * Copyright 2017 clickalicious UG, Benjamin Carl
+ * Copyright 2017 clickalicious, Benjamin Carl
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
@@ -27,20 +25,25 @@
  * SOFTWARE.
  */
 
-namespace Install\File\Installer;
+namespace Clickalicious\Install\File\Installer;
 
 /**
- * Class AbstractInstaller
+ * Class InstallerFactory
  *
  * @package Install\File\Installer
  * @author  Benjamin Carl <opensource@clickalicious.de>
  */
-abstract class AbstractInstaller
+class InstallerLinux extends AbstractInstaller implements InstallerInterface
 {
     /**
-     * Directory separator used by OS.
-     *
-     * @var string
+     * @inheritdoc
      */
-    const DIRECTORY_SEPARATOR = DIRECTORY_SEPARATOR;
+    public function install($file, $updatePath = false)
+    {
+        dump($file);
+        dump($updatePath);
+        die;
+
+        return true;
+    }
 }

@@ -1,10 +1,8 @@
 <?php
 
 /**
- * Install
- *
  * (The MIT license)
- * Copyright 2017 clickalicious UG, Benjamin Carl
+ * Copyright 2017 clickalicious, Benjamin Carl
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
@@ -25,12 +23,9 @@
  * ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
- *
- * @package    Install
- * @subpackage Install\Console
  */
 
-namespace Install\Console\Command;
+namespace Clickalicious\Install\Console\Command;
 
 use Install\File\Installer;
 use Symfony\Component\Console\Command\Command;

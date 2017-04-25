@@ -1,10 +1,8 @@
 <?php
 
 /**
- * Install
- *
  * (The MIT license)
- * Copyright 2017 clickalicious UG, Benjamin Carl
+ * Copyright 2017 clickalicious, Benjamin Carl
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
@@ -27,15 +25,27 @@
  * SOFTWARE.
  */
 
-namespace Install\File\Installer;
+namespace Clickalicious\Install\File\Installer;
 
 /**
- * Class InstallerNotAvailableException
+ * Interface InstallerInterface
  *
  * @package Install\File\Installer
  * @author  Benjamin Carl <opensource@clickalicious.de>
  */
-class InstallerNotAvailableException extends \DomainException
+interface InstallerInterface
 {
-    // Intentionally left empty
+    /**
+     * Installs a file by storing it in a common place and optionally making it available in path.
+     *
+     * @param string $file       File (name + path) to install.
+     * @param bool   $updatePath TRUE to make it globally availbale by updating path, FALSE to do not.
+     *
+     * @author Benjamin Carl <opensource@clickalicious.de>
+     *
+     * @return bool TRUE on success, otherwise FALSE
+     *
+     * @throws InstallFailedException On any exceptional behavior.
+     */
+    public function install($file, $updatePath = false);
 }

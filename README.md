@@ -1,13 +1,14 @@
-<img src="https://avatars2.githubusercontent.com/u/514566?v=3&u=4615dfc4970d93dea5d3eaf996b7903ee6e24e20&s=140" align="right" />
+<img src="https://avatars0.githubusercontent.com/u/26927954?v=3&s=80" align="right" />
+
 ---
 
 ![Logo of install](docs/logo-large.png)
 
-Installer for **installing binary-, phar-, shell- or batch-files from local or remote** source.
+Installer for **binary-, phar-, shell- or batch-files from local or remote** source.
 
-| [![Travis branch](https://img.shields.io/travis/clickalicious/install/master.svg)](https://travis-ci.org/clickalicious/install) 	| [![Codacy branch grade](https://img.shields.io/codacy/grade/8c129b9effb64446a8d2d30eaf305679/master.svg)](https://www.codacy.com/app/clickalicious/install?utm_source=github.com&utm_medium=referral&utm_content=clickalicious/install&utm_campaign=Badge_Grade) 	| [![Codacy coverage](https://img.shields.io/codacy/coverage/8c129b9effb64446a8d2d30eaf305679.svg)](https://www.codacy.com/app/clickalicious/install?utm_source=github.com&utm_medium=referral&utm_content=clickalicious/install&utm_campaign=Badge_Grade) 	| [![clickalicious open source](https://img.shields.io/badge/clickalicious-open--source-green.svg?style=flat)](https://www.clickalicious.de/) 	|
+| [![Build Status](https://travis-ci.org/clickalicious/install.svg?branch=master)](https://travis-ci.org/clickalicious/install) 	| [![Codacy branch grade](https://img.shields.io/codacy/grade/8c129b9effb64446a8d2d30eaf305679/master.svg)](https://www.codacy.com/app/clickalicious/install?utm_source=github.com&utm_medium=referral&utm_content=clickalicious/install&utm_campaign=Badge_Grade) 	| [![Codacy coverage](https://img.shields.io/codacy/coverage/8c129b9effb64446a8d2d30eaf305679.svg)](https://www.codacy.com/app/clickalicious/install?utm_source=github.com&utm_medium=referral&utm_content=clickalicious/install&utm_campaign=Badge_Grade) 	| [![clickalicious open source](https://img.shields.io/badge/clickalicious-open--source-green.svg?style=flat)](https://www.clickalicious.de/) 	|
 |---	|---	|---	|---	|
-| [![GitHub release](https://img.shields.io/github/release/clickalicious/install.svg?style=flat)](https://github.com/clickalicious/install/releases) 	| [![](https://img.shields.io/github/issues-raw/clickalicious/install.svg)](https://github.com/clickalicious/install/issues)  	| [![Issue Stats](https://img.shields.io/issuestats/i/github/clickalicious/install.svg)](https://github.com/clickalicious/install/issues) 	| [![license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://opensource.org/licenses/MIT)  	|
+| [![GitHub release](https://img.shields.io/github/release/clickalicious/install.svg?style=flat)](https://github.com/clickalicious/install/releases) 	| [![license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://opensource.org/licenses/MIT)  	| [![Issue Stats](https://img.shields.io/issuestats/i/github/clickalicious/install.svg)](https://github.com/clickalicious/install/issues) 	| [![Dependency Status](https://dependencyci.com/github/clickalicious/install/badge)](https://dependencyci.com/github/clickalicious/install)  	|
 
 
 ## Table of Contents
@@ -25,9 +26,11 @@ Installer for **installing binary-, phar-, shell- or batch-files from local or r
 ## Features
 
  - CLI- and Composer-Interface for installing files (binary-, phar-, shell- or batch-files) from local or remote source (URL)
- - High-quality & stable codebase (following PSR standards e.g. `PSR-0,1,4`)
+ - Download files
+ - Install files
+ - Use directly from within your `composer.json`
+ - High-quality & stable codebase (following PSR standards e.g. `PSR-1,4`)
  - Built on top of good PHP libraries
- - PHP 7.1 & HHVM ready
  - Clean + well documented code
  - Unit-tested with a good coverage
 
@@ -69,12 +72,12 @@ Use `clickalicious\install` in `CLI` context for downloading and installing a bi
 
 ## Requirements
 
- - `PHP >= 5.6` (compatible up to version 5.6 as well as 7.1 and HHVM)
+ - `PHP >= 5.6` (compatible up to version `7.2` as well as `HHVM`)
 
 
 ## Philosophy
 
-This library provides a state of the art `PRNG` (**P**seudo **R**andom **N**umber **G**enerator) implementation to generate secure `Pseudo Random Numbers` with PHP. The generation is either based on `Open SSL` or `MCrypt` or as fallback on PHP's internal functionality. The library also provides a very good `Seed generator` on puplic API. If you are interested in the difference between real and pseduo randomness then you could start at [https://www.random.org/randomness/](https://www.random.org/randomness/ "https://www.random.org/randomness/").
+This library provides the capability of downloading files from an URL and/or install files like ...  .
 
 
 ## Versioning

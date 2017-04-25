@@ -1,10 +1,8 @@
 <?php
 
 /**
- * Install
- *
  * (The MIT license)
- * Copyright 2017 clickalicious UG, Benjamin Carl
+ * Copyright 2017 clickalicious, Benjamin Carl
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
@@ -27,25 +25,15 @@
  * SOFTWARE.
  */
 
-namespace Install\File\Installer;
+namespace Clickalicious\Install\File\Installer;
 
 /**
- * Class InstallerFactory
+ * Class InstallerNotAvailableException
  *
  * @package Install\File\Installer
  * @author  Benjamin Carl <opensource@clickalicious.de>
  */
-class InstallerLinux extends AbstractInstaller implements InstallerInterface
+class InstallerNotAvailableException extends \DomainException
 {
-    /**
-     * @inheritdoc
-     */
-    public function install($file, $updatePath = false)
-    {
-        dump($file);
-        dump($updatePath);
-        die;
-
-        return true;
-    }
+    // Intentionally left empty
 }

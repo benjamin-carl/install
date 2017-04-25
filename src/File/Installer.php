@@ -1,10 +1,8 @@
 <?php
 
 /**
- * Install
- *
  * (The MIT license)
- * Copyright 2017 clickalicious UG, Benjamin Carl
+ * Copyright 2017 clickalicious, Benjamin Carl
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
@@ -27,27 +25,52 @@
  * SOFTWARE.
  */
 
-namespace Install\File\Installer;
+namespace Clickalicious\Install\File;
+
+use Install\File\Installer\InstallerFactory;
 
 /**
- * Interface InstallerInterface
+ * Class Installer
  *
- * @package Install\File\Installer
+ * @package Install\File
  * @author  Benjamin Carl <opensource@clickalicious.de>
  */
-interface InstallerInterface
+class Installer
 {
     /**
-     * Installs a file by storing it in a common place and optionally making it available in path.
+     * @var \Install\File\Installer\InstallerFactory
+     */
+    protected $installerFactory;
+
+    /**
+     * Installer constructor.
      *
-     * @param string $file       File (name + path) to install.
-     * @param bool   $updatePath TRUE to make it globally availbale by updating path, FALSE to do not.
+     * @param \Install\File\Installer\InstallerFactory $installerFactory
+     */
+    public function __construct(InstallerFactory $installerFactory)
+    {
+        $this->installerFactory = $installerFactory;
+    }
+
+    /**
+     * Installs a file by delegating install action to an OS dependent
+     *
+     * @param string $filename Name and path of the file being installed.
      *
      * @author Benjamin Carl <opensource@clickalicious.de>
      *
-     * @return bool TRUE on success, otherwise FALSE
-     *
-     * @throws InstallFailedException On any exceptional behavior.
+     * @return bool|string TRUE on success, otherwise string containing error message.
      */
-    public function install($file, $updatePath = false);
+    public function install($filename)
+    {
+        try {
+            $osDependentInstaller = $this->installerFactory->create();
+            $result = $osDependentInstaller->install($filename);
+
+        } catch (\Exception $exception) {
+            $result = $exception->getMessage();
+        }
+
+        return $result;
+    }
 }

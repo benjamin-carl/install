@@ -1,10 +1,8 @@
 <?php
 
 /**
- * Install
- *
  * (The MIT license)
- * Copyright 2017 clickalicious UG, Benjamin Carl
+ * Copyright 2017 clickalicious, Benjamin Carl
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
@@ -27,61 +25,50 @@
  * SOFTWARE.
  */
 
-namespace Install\File\Installer;
+namespace Clickalicious\Install\Console\Helper;
+
+use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Helper\ProgressBar;
 
 /**
- * Class InstallerFactory
+ * Class ProgressbarFactory
  *
- * @package Install\File\Installer
+ * @package Install\Console\Helper
  * @author  Benjamin Carl <opensource@clickalicious.de>
  */
-class InstallerFactory
+class ProgressbarFactory
 {
     /**
-     * @var string
-     */
-    protected $operatingSystem;
-
-    /**
-     * Used for OS detection linux.
-     *
-     * @var string
-     */
-    const OS_LINUX = 'linux';
-
-    /**
-     * InstallerFactory constructor.
-     *
-     * @param string $operatingSystem
-     */
-    public function __construct($operatingSystem)
-    {
-        $this->operatingSystem = $operatingSystem;
-    }
-
-    /**
-     * Creates and returns operating specific installer instance.
+     * Creates callbacks for displaying a progressbar.
      *
      * @author Benjamin Carl <opensource@clickalicious.de>
      *
-     * @return InstallerInterface
-     *
-     * @throws InstallerNotAvailableException
+     * @return callable Progressbar callback
      */
-    public function create()
+    public function create(OutputInterface $output)
     {
-        switch ($this->operatingSystem) {
-            case self::OS_LINUX:
-                $installer = new InstallerLinux();
-                break;
+        /**
+         * @param int $downloadBytesTotal       Total number of bytes to transfer.
+         * @param int $downloadBytesTransferred Number of bytes actually transferred.
+         */
+        return function (
+            $downloadBytesTotal,
+            $downloadBytesTransferred
+        ) use ($output) {
 
-            default:
-                throw new InstallerNotAvailableException(
-                    sprintf('The operating system "%s" is currently not supported.', $this->operatingSystem)
-                );
-                break;
-        }
+            static $progressBar;
 
-        return $installer;
+            if (null === $progressBar && $downloadBytesTotal > 0) {
+                $progressBar = new ProgressBar($output, $downloadBytesTotal);
+                $progressBar->start();
+
+            } elseif (null !== $progressBar) {
+                $progressBar->setProgress($downloadBytesTransferred);
+
+                if ($downloadBytesTransferred >= $downloadBytesTotal) {
+                    $progressBar->finish();
+                }
+            }
+        };
     }
 }

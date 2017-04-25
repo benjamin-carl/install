@@ -32,7 +32,7 @@
   },
   "autoload": {
     "psr-4": {
-      "Install\\": "src/Install/"
+      "Clickalicious\\Install\\": "src/"
     },
     "exclude-from-classmap": [
       "src/composer_autoloader.php"
@@ -40,7 +40,7 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "Install\\": "tests/Install/"
+      "Clickalicious\\Install\\": "tests/"
     }
   },
   "keywords": [
@@ -68,7 +68,7 @@
   },
   "config": {
     "bin-dir": "bin",
-    "preferred-install": "source"
+    "preferred-install": "dist"
   },
   "bin": ["bin/install"]
 }

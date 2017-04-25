@@ -25,26 +25,15 @@
  * SOFTWARE.
  */
 
-/**
- * Attempts to load Composer's autoload.php as either a dependency or a
- * stand-alone package.
+namespace Clickalicious\Install\File\Installer;
+
+/***
+ * Class InstallFailedException
  *
- * @return boolean
+ * @package Install\File\Installer
+ * @author  Benjamin Carl <opensource@clickalicious.de>
  */
-return function () {
-
-    $files = [
-        dirname(__DIR__, 3).'/autoload.php',          // composer dependency
-        dirname(__DIR__, 1).'/vendor/autoload.php',   // stand-alone package
-    ];
-
-    foreach ($files as $file) {
-        if (true === is_file($file)) {
-            require_once $file;
-
-            return true;
-        }
-    }
-
-    return false;
-};
+class InstallFailedException extends \RuntimeException
+{
+    // Intentionally left empty.
+}

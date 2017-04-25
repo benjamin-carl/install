@@ -1,10 +1,8 @@
 <?php
 
 /**
- * Install
- *
  * (The MIT license)
- * Copyright 2017 clickalicious UG, Benjamin Carl
+ * Copyright 2017 clickalicious, Benjamin Carl
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
@@ -27,15 +25,20 @@
  * SOFTWARE.
  */
 
-namespace Install\File\Installer;
+namespace Clickalicious\Install\File\Installer;
 
-/***
- * Class InstallFailedException
+/**
+ * Class AbstractInstaller
  *
  * @package Install\File\Installer
  * @author  Benjamin Carl <opensource@clickalicious.de>
  */
-class InstallFailedException extends \RuntimeException
+abstract class AbstractInstaller
 {
-    // Intentionally left empty.
+    /**
+     * Directory separator used by OS.
+     *
+     * @var string
+     */
+    const DIRECTORY_SEPARATOR = DIRECTORY_SEPARATOR;
 }
